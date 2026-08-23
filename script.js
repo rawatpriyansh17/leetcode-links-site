@@ -339,9 +339,10 @@ function render() {
 }
 
 function updateProgress() {
-  const completed = problems.filter((problem) => progress[problem.id]).length;
-  const percent = problems.length ? Math.round((completed / problems.length) * 100) : 0;
-  els.progressText.textContent = `${completed} of ${problems.length} completed`;
+  const roadmapProblems = problems.filter((problem) => problem.topic !== "Extra Problems");
+  const completed = roadmapProblems.filter((problem) => progress[problem.id]).length;
+  const percent = roadmapProblems.length ? Math.round((completed / roadmapProblems.length) * 100) : 0;
+  els.progressText.textContent = `${completed} of ${roadmapProblems.length} completed`;
   els.progressPercent.textContent = `${percent}%`;
   els.progressBar.style.width = `${percent}%`;
   els.progressMessage.textContent = percent === 100 ? "Roadmap complete. Outstanding work." : percent >= 75 ? "The finish line is in sight." : percent >= 40 ? "Strong momentum. Keep building." : percent > 0 ? "Every solved problem compounds." : "Start small. Consistency compounds.";
