@@ -25,6 +25,110 @@ const ADDITIONAL_PROBLEMS = [
   { topic: "Trie", group: "Problems", name: "Number of Distinct Substrings in a String", slug: "number-of-distinct-substrings-in-a-string" },
 ];
 
+// A link remains in the main roadmap only when it represents a problem or
+// algorithm in the non-beginner sections of the supplied TUF+ export.
+const TUF_ROADMAP_SLUGS = new Set(`
+  01-matrix 3sum 4sum accounts-merge add-two-numbers alien-dictionary
+  all-nodes-distance-k-in-binary-tree asteroid-collision assign-cookies
+  balanced-binary-tree best-time-to-buy-and-sell-stock
+  best-time-to-buy-and-sell-stock-ii best-time-to-buy-and-sell-stock-iii
+  best-time-to-buy-and-sell-stock-iv best-time-to-buy-and-sell-stock-with-transaction-fee
+  binary-search binary-subarrays-with-sum binary-search-tree-iterator
+  binary-tree-inorder-traversal binary-tree-level-order-traversal
+  binary-tree-maximum-path-sum binary-tree-paths binary-tree-postorder-traversal
+  binary-tree-preorder-traversal binary-tree-right-side-view
+  binary-tree-zigzag-level-order-traversal boundary-of-binary-tree burst-balloons
+  candy cheapest-flights-within-k-stops cherry-pickup-ii climbing-stairs coin-change
+  coin-change-ii combination-sum combination-sum-ii combination-sum-iii
+  construct-binary-search-tree-from-preorder-traversal
+  construct-binary-tree-from-inorder-and-postorder-traversal
+  construct-binary-tree-from-preorder-and-inorder-traversal copy-list-with-random-pointer
+  count-and-say count-complete-tree-nodes count-number-of-nice-subarrays count-primes
+  course-schedule course-schedule-ii critical-connections-in-a-network
+  delete-node-in-a-bst delete-node-in-a-linked-list
+  delete-operation-for-two-strings delete-the-middle-node-of-a-linked-list
+  diameter-of-binary-tree distinct-subsequences divide-two-integers edit-distance
+  find-a-peak-element-ii find-eventual-safe-states find-first-and-last-position-of-element-in-sorted-array
+  find-minimum-in-rotated-sorted-array find-peak-element
+  find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance
+  find-the-smallest-divisor-given-a-threshold flatten-a-multilevel-doubly-linked-list
+  find-the-celebrity flood-fill fruit-into-baskets generate-parentheses hand-of-straights house-robber
+  house-robber-ii implement-queue-using-stacks implement-stack-using-queues
+  implement-trie-prefix-tree implement-strstr inorder-successor-in-bst insert-interval
+  insert-into-a-binary-search-tree intersection-of-two-arrays-ii is-graph-bipartite
+  intersection-of-two-linked-lists jump-game koko-eating-bananas kth-largest-element-in-a-stream
+  kth-largest-element-in-an-array kth-smallest-element-in-a-bst largest-bst-subtree
+  largest-divisible-subset largest-rectangle-in-histogram lemonade-change
+  letter-combinations-of-a-phone-number lfu-cache linked-list-cycle linked-list-cycle-ii
+  longest-common-subsequence longest-consecutive-sequence longest-happy-prefix
+  longest-increasing-subsequence longest-palindromic-subsequence
+  longest-repeating-character-replacement longest-string-chain
+  longest-substring-with-at-most-k-distinct-characters
+  longest-substring-without-repeating-characters longest-word-with-all-prefixes
+  lowest-common-ancestor-of-a-binary-search-tree lowest-common-ancestor-of-a-binary-tree
+  lru-cache majority-element majority-element-ii making-a-large-island maximal-rectangle
+  max-consecutive-ones max-consecutive-ones-iii maximum-depth-of-binary-tree maximum-product-subarray
+  maximum-points-you-can-obtain-from-cards maximum-size-subarray-sum-equals-k
+  maximum-subarray maximum-width-of-binary-tree maximum-xor-of-two-numbers-in-an-array
+  maximum-xor-with-an-element-from-array median-of-two-sorted-arrays
+  merge-sorted-array merge-two-sorted-lists middle-of-the-linked-list
+  minimum-add-to-make-parentheses-valid minimum-bit-flips-to-convert-number
+  minimum-cost-to-cut-a-stick minimum-falling-path-sum minimum-insertion-steps-to-make-a-string-palindrome
+  minimum-number-of-days-to-make-m-bouquets minimum-window-substring min-stack
+  minimize-max-distance-to-gas-station missing-number most-stones-removed-with-same-row-or-column
+  move-zeroes
+  n-queens network-delay-time next-greater-element-i next-greater-element-ii next-permutation non-overlapping-intervals
+  number-of-connected-components-in-an-undirected-graph number-of-distinct-islands
+  number-of-distinct-substrings-in-a-string number-of-enclaves number-of-islands
+  number-of-islands-ii number-of-longest-increasing-subsequence
+  number-of-operations-to-make-network-connected number-of-provinces
+  number-of-substrings-containing-all-three-characters number-of-ways-to-arrive-at-destination
+  odd-even-linked-list online-stock-span palindrome-linked-list palindrome-partitioning
+  palindrome-partitioning-ii partition-array-into-two-arrays-to-minimize-sum-difference
+  partition-equal-subset-sum pascals-triangle pascals-triangle-ii path-with-minimum-effort
+  plus-one-linked-list powx-n recover-binary-search-tree
+  remove-duplicates-from-sorted-array remove-k-digits remove-nth-node-from-end-of-list
+  rearrange-array-elements-by-sign repeated-string-match reverse-linked-list
+  reverse-nodes-in-k-group reverse-pairs reverse-words-in-a-string rotate-array rotate-image
+  rotate-list rotting-oranges row-with-maximum-ones same-tree search-a-2d-matrix search-a-2d-matrix-ii
+  search-in-a-binary-search-tree search-in-rotated-sorted-array
+  search-in-rotated-sorted-array-ii search-insert-position serialize-and-deserialize-binary-tree
+  set-mismatch shortest-common-supersequence shortest-palindrome shortest-path-in-binary-matrix
+  single-element-in-a-sorted-array single-number single-number-ii single-number-iii
+  sliding-window-maximum sort-colors sort-list spiral-matrix split-array-largest-sum sqrtx
+  subarray-sum-equals-k subsets subsets-ii sudoku-solver sum-of-subarray-minimums
+  sum-of-subarray-ranges surrounded-regions symmetric-tree target-sum triangle
+  trapping-rain-water two-sum two-sum-iv-input-is-a-bst unique-paths unique-paths-ii
+  valid-parentheses valid-parenthesis-string validate-binary-search-tree
+  vertical-order-traversal-of-a-binary-tree wildcard-matching word-ladder word-ladder-ii
+  word-search
+`.trim().split(/\s+/));
+
+const BEGINNER_ADJACENT_PROBLEMS = [
+  { name: "Find Numbers with Even Number of Digits", slug: "find-numbers-with-even-number-of-digits", source: "Count all digits of a number" },
+  { name: "Reverse Integer", slug: "reverse-integer", source: "Reverse a number" },
+  { name: "Palindrome Number", slug: "palindrome-number", source: "Palindrome number" },
+  { name: "Factorial Trailing Zeroes", slug: "factorial-trailing-zeroes", source: "Factorial of a given number" },
+  { name: "Armstrong Number", slug: "armstrong-number", source: "Check if the number is Armstrong" },
+  { name: "Perfect Number", slug: "perfect-number", source: "Check for perfect number" },
+  { name: "Find Greatest Common Divisor of Array", slug: "find-greatest-common-divisor-of-array", source: "GCD of two numbers" },
+  { name: "Self Dividing Numbers", slug: "self-dividing-numbers", source: "Divisors of a number" },
+  { name: "Running Sum of 1d Array", slug: "running-sum-of-1d-array", source: "Sum of array elements" },
+  { name: "Check if Array Is Sorted and Rotated", slug: "check-if-array-is-sorted-and-rotated", source: "Check if the array is sorted" },
+  { name: "Frequency of the Most Frequent Element", slug: "frequency-of-the-most-frequent-element", source: "Highest occurring array element" },
+  { name: "Maximum Difference Between Even and Odd Frequency I", slug: "maximum-difference-between-even-and-odd-frequency-i", source: "Highest and lowest frequencies" },
+  { name: "Reverse String", slug: "reverse-string", source: "Reverse a string recursively" },
+  { name: "Valid Palindrome", slug: "valid-palindrome", source: "Palindrome check" },
+  { name: "Largest Odd Number in String", slug: "largest-odd-number-in-string", source: "Largest odd number in a string" },
+  { name: "Longest Common Prefix", slug: "longest-common-prefix", source: "Longest common prefix" },
+  { name: "Isomorphic Strings", slug: "isomorphic-strings", source: "Isomorphic string" },
+  { name: "Rotate String", slug: "rotate-string", source: "Rotate string" },
+  { name: "Valid Anagram", slug: "valid-anagram", source: "Valid anagram" },
+  { name: "Sort Characters By Frequency", slug: "sort-characters-by-frequency", source: "Sort characters by frequency" },
+  { name: "Add Digits", slug: "add-digits", source: "Sum of digits in a number" },
+  { name: "Fibonacci Number", slug: "fibonacci-number", source: "Fibonacci number" },
+];
+
 const STORAGE_KEY = "dsa-roadmap-progress-v1";
 const THEME_KEY = "dsa-roadmap-theme";
 
@@ -66,7 +170,7 @@ function parseSource(markdown) {
   });
 
   const existingSlugs = new Set(
-    topics.flatMap((item) => item.groups.flatMap((group) => group.problems.map((problem) => problem.url.match(/\/problems\/([^/?#]+)/)?.[1]).filter(Boolean)))
+    topics.flatMap((item) => item.groups.flatMap((group) => group.problems.map((problem) => getProblemSlug(problem.url)).filter(Boolean)))
   );
   ADDITIONAL_PROBLEMS.forEach((addition) => {
     if (existingSlugs.has(addition.slug)) return;
@@ -84,7 +188,71 @@ function parseSource(markdown) {
     });
     existingSlugs.add(addition.slug);
   });
-  return topics;
+
+  BEGINNER_ADJACENT_PROBLEMS.forEach((addition) => {
+    if (existingSlugs.has(addition.slug)) return;
+    const holdingGroup = topics[0].groups[0];
+    holdingGroup.problems.push({
+      id: `problem-${index++}`,
+      done: false,
+      duplicate: false,
+      name: addition.name,
+      url: `https://leetcode.com/problems/${addition.slug}/`,
+      topic: topics[0].title,
+      group: holdingGroup.title,
+      source: addition.source,
+    });
+    existingSlugs.add(addition.slug);
+  });
+
+  return organizeRoadmap(topics);
+}
+
+function getProblemSlug(url) {
+  return url.match(/\/problems\/([^/?#]+)/)?.[1] || "";
+}
+
+function organizeRoadmap(parsedTopics) {
+  const beginnerSources = new Map(BEGINNER_ADJACENT_PROBLEMS.map((problem) => [problem.slug, problem.source]));
+  const beginnerExtras = [];
+  const siteExtras = [];
+
+  parsedTopics.forEach((topic) => {
+    topic.groups.forEach((group) => {
+      group.problems = group.problems.filter((problem) => {
+        const slug = getProblemSlug(problem.url);
+        if (TUF_ROADMAP_SLUGS.has(slug)) return true;
+
+        problem.originalTopic = topic.title;
+        problem.topic = "Extra Problems";
+        if (beginnerSources.has(slug)) {
+          problem.group = "Beginner-Adjacent LeetCode";
+          problem.source = beginnerSources.get(slug);
+          beginnerExtras.push(problem);
+        } else {
+          problem.group = "Not in Current TUF+ Roadmap";
+          siteExtras.push(problem);
+        }
+        return false;
+      });
+    });
+    topic.groups = topic.groups.filter((group) => group.problems.length);
+  });
+
+  const organized = parsedTopics.filter((topic) => topic.groups.length);
+  organized.push({
+    title: "Extra Problems",
+    groups: [
+      { title: "Beginner-Adjacent LeetCode", problems: beginnerExtras },
+      { title: "Not in Current TUF+ Roadmap", problems: siteExtras },
+    ].filter((group) => group.problems.length),
+  });
+
+  organized.forEach((topic, topicIndex) => {
+    topic.number = topicIndex + 1;
+    topic.slug = `topic-${topicIndex + 1}`;
+  });
+  return organized;
 }
 
 const topics = parseSource(SOURCE);
@@ -135,9 +303,10 @@ function renderNav() {
 
 function problemHTML(problem) {
   const duplicate = problem.duplicate ? `<span class="duplicate">DUPLICATE</span>` : "";
+  const source = problem.source ? `<span class="problem-source">Adjacent to TUF Beginner: ${escapeHTML(problem.source)}</span>` : "";
   return `<div class="problem ${progress[problem.id] ? "done" : ""}">
     <input class="check" type="checkbox" id="${problem.id}" data-id="${problem.id}" ${progress[problem.id] ? "checked" : ""} aria-label="Mark ${escapeHTML(problem.name)} complete" />
-    <a class="problem-link" href="${escapeHTML(problem.url)}" target="_blank" rel="noreferrer">${escapeHTML(problem.name)}${duplicate}</a>
+    <div class="problem-copy"><a class="problem-link" href="${escapeHTML(problem.url)}" target="_blank" rel="noreferrer">${escapeHTML(problem.name)}${duplicate}</a>${source}</div>
     <a class="external" href="${escapeHTML(problem.url)}" target="_blank" rel="noreferrer" aria-label="Open ${escapeHTML(problem.name)} on LeetCode"><svg viewBox="0 0 24 24"><path d="M14 5h5v5M19 5l-9 9M19 14v5H5V5h5"/></svg></a>
   </div>`;
 }
